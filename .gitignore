@@ -1,0 +1,13 @@
+*.pyc
+*.swp
+*.egg-info/
+*.so
+*.html
+*.c
+build/
+*.png
+.coverage
+dist/
+*.exe
+notes.md
+bin/
