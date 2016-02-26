@@ -146,7 +146,7 @@ Release date: {version_date}
                 tab1_layout, (1, 0))
         el.setAlignment(QtCore.Qt.AlignRight)
 
-
+        tab1.setLayout(tab1_layout)
         self.tab_widget.addTab(tab1, "Main")
         ctab['base'] = {'depends': ['original'], 'qtobj': tab1}
 
