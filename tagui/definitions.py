@@ -7,6 +7,8 @@ from __future__ import print_function
 
 import sys, os, random
 from time import sleep
+from collections import OrderedDict
+
 import siqt
 from siqt import QtCore
 from siqt import QtWidgets
@@ -232,35 +234,31 @@ Release date: {version_date}
 
     def create_menu(self):
 
-        file_menu_elements = {
-            'open_datafile' : {'text': "&Open..", 'shortcut': "Ctrl+O",
-                           'tip': "Open file", 'depends': [] },
+        file_menu = OrderedDict()
+        
+        file_menu['open_datafile'] =  {'text': "&Open..", 'shortcut': "Ctrl+O",
+                           'tip': "Open file", 'depends': [] }
             #'export_data': {'text': '&Export trace data..',
             #            'tip':  "Export trace data", 'depends': ['original'] },
-            'close': {'text': '&Quit', 'shortcut': 'Ctrl+Q',
-                'tip':  "Close the application", 'slot': self.close, 'depends': [] },
+        file_menu['break1'] = None
 
-                }
-        file_menu_order = ['open_datafile',
-                                None, 'close']
+        file_menu['close'] =  {'text': '&Quit', 'shortcut': 'Ctrl+Q',
+                'tip':  "Close the application", 'slot': self.close, 'depends': [] }
 
-        self.menu_generator('file', 'File', file_menu_elements, file_menu_order)
+        self.menu_generator('file', 'File', file_menu)
 
 
 
-        debug_menu_elements = {
-            'debug_information' : {'text': '&Debug information', 'depends': []}}
+        debug_menu = OrderedDict()
+        debug_menu['debug_information'] =  {'text': '&Debug information', 'depends': []}
 
-        debug_menu_order = ['debug_information']
-        self.menu_generator('debug', 'Debug', debug_menu_elements, debug_menu_order)
+        self.menu_generator('debug', 'Debug', debug_menu)
 
 
         # Help menu
-        about_menu_elements = {
-            'about': {'text': "&About this program", 'shortcut': 'F1', 'depends': [] },
-                    }
-        about_menu_order = ['about']
-        self.menu_generator('about', 'About', about_menu_elements, about_menu_order)
+        about_menu = OrderedDict()
+        about_menu['about'] =  {'text': "&About this program", 'shortcut': 'F1', 'depends': [] }
+        self.menu_generator('about', 'About', about_menu)
 
 
 
