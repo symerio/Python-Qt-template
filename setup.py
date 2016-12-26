@@ -9,7 +9,7 @@ import re
 
 # a define the version sting inside the package
 # see https://stackoverflow.com/questions/458550/standard-way-to-embed-version-into-python-package
-VERSIONFILE="tagui/_version.py"
+VERSIONFILE="gprkrige/_version.py"
 verstrline = open(VERSIONFILE, "rt").read()
 VSRE = r"^__version__ = ['\"]([^'\"]*)['\"]"
 mo = re.search(VSRE, verstrline, re.M)
@@ -19,7 +19,7 @@ else:
     raise RuntimeError("Unable to find version string in %s." % (VERSIONFILE,))
 
 
-setup(name='tagui',
+setup(name='gprkrige',
       version=version,
       description='',
       author='??',

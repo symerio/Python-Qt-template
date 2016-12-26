@@ -1,1 +1,3 @@
-# A module to manipulate geographical data produced by GPR
+# GPR Krige
+
+A module to plot kriging results 

@@ -2,10 +2,12 @@
 # -*- coding: utf-8 -*-
 
 import sys
-from siqt import QtWidgets
+import os
 
-from tagui.core import GprMainWindow
+os.environ['QT_API'] = 'pyqt'
 
+from qtpy import QtWidgets
+from gprkrige.core import GprMainWindow
 
 
 def main():

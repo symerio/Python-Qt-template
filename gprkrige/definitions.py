@@ -9,23 +9,26 @@ import sys, os, random
 from time import sleep
 from collections import OrderedDict
 
-import siqt
-from siqt import QtCore
-from siqt import QtWidgets
-import siqt.matplotlib
-from siqt.matplotlib import backend_qtagg
-from siqt.matplotlib import NavigationToolbar
+import SiQt
+from qtpy import QtCore
+from qtpy import QtWidgets
+
+import matplotlib.backends.backend_qt4agg as backend_qtagg
 
 from matplotlib.figure import Figure
 import matplotlib.pyplot as plt
 
 import numpy as np
 
-from siqt import __version__, __version_date__, __version_hash__, _resource_path
-from siqt.dep_resolv import sync_gui, dependency_graph, calculate_dependencies
-from siqt.definitions import (add_actions, create_action,
+from gprcore import __version__, __version_date__, __version_hash__, _resource_path
+from SiQt.siqt.dep_resolv import sync_gui, dependency_graph, calculate_dependencies
+from SiQt.siqt.definitions import (add_actions, create_action,
                     menu_generator, set_dep_flag_recursive, SiqtElement)
 
+class NavigationToolbar(backend_qtagg.NavigationToolbar2QT):
+    # only display the buttons we need
+    toolitems = [t for t in backend_qtagg.NavigationToolbar2QT.toolitems if
+                 t[0] in ('Home', 'Pan', 'Zoom', 'Save')]
 
 
 def gpr_show_figure(self):
@@ -35,9 +38,7 @@ def gpr_show_figure(self):
     return f
 
 
-
 HSLIDER_STEP = 1
-
 
 
 class GprMainWindowBase(QtWidgets.QMainWindow):
@@ -170,10 +171,10 @@ Release date: {version_date}
         #hslider.setVisible(False)
         hslider.setTickPosition(QtWidgets.QSlider.TicksBothSides)
 
-        self.controls['hslider'] = SiqtElement(hslider, depends=['original'],
-                                 show=hslider.setVisible)
+        #self.controls['hslider'] = SiqtElement(hslider, depends=['original'],
+        #                         show=hslider.setVisible)
 
-        hslider.valueChanged.connect(self.on_zoom)
+        #hslider.valueChanged.connect(self.on_zoom)
 
 
         #vbox.addWidget(hslider)

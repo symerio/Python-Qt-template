@@ -9,16 +9,17 @@ from __future__ import print_function
 import sys, os, random
 from time import sleep
 
-import siqt
-from siqt import QtCore
-from siqt import QtWidgets
-from siqt.dep_resolv import sync_gui, calculate_dependencies
-from siqt.widgets import (DebugInfoWidget,)
-import siqt.matplotlib
+import SiQt
+from qtpy import QtCore
+from qtpy import QtWidgets
+from SiQt.siqt.dep_resolv import sync_gui, calculate_dependencies
+from SiQt.siqt.widgets import (DebugInfoWidget,)
+#import SiQt.siqt.matplotlib
+import matplotlib
 
-#matplotlib.rcParams['backend.qt4']='PyQt4'
-#matplotlib.rcParams['axes.formatter.limits'] = -6,6  # use scientific notation if log10
-#                # of the axis range is smaller than the first or larger than the second
+matplotlib.rcParams['backend.qt4'] = 'PyQt4'
+matplotlib.rcParams['axes.formatter.limits'] = -6,6  # use scientific notation if log10
+                # of the axis range is smaller than the first or larger than the second
 
 
 from matplotlib.figure import Figure
@@ -71,28 +72,6 @@ class GprMainWindow(GprMainWindowBase):
 
 
 
-    def wheel_event_slidebar(self, event):
-        """Control mouse scrolling """
-        if self.gpr is None or is_fft_view(self.view_mode) \
-                or self.view_mode == 'trajectory':
-            return
-
-        if hasattr(event, 'delta'):
-            direction = event.delta()//120
-        else:
-            if event.button == 'up':
-                direction = +1
-            elif event.button == 'down':
-                direction = -1
-            else:  # this shouldn't happen
-                return
-        hslider = self.controls['hslider']['qtobj']
-        mval  = hslider.value() + direction*HSLIDER_STEP
-        mval = min(mval, 100)
-        mval = max(0, mval)
-        hslider.setValue(mval)
-
-
     def wheel_event_zoom(self, event):
         """ Zoom on the cursor """
         base_scale = 1.1
@@ -129,7 +108,7 @@ class GprMainWindow(GprMainWindowBase):
 
 
     @sync_gui(update=['original'], view_mode='original')
-    def on_open_datafile(self):
+    def on_open_datafile(self, state):
         file_choices = "Reflexw (*.*R);;All Files (*)"
 
         path = QtWidgets.QFileDialog.getOpenFileName(self, 
@@ -139,18 +118,6 @@ class GprMainWindow(GprMainWindowBase):
         path = str(path)
         if not path:
             return
-    def on_zoom(self):
-        
-        Nt, Nx =  self.gpr.data.shape
-        Nx_viz = int(self.fig_ratio*Nt)
-        hslider = self.controls['hslider']['qtobj']
-        pos = int((hslider.value()/100.)*(Nx-Nx_viz))
-        mask =  slice(pos, pos+Nx_viz) #self.gpr.get_mask((0, Nx_viz))
-        x = self.gpr.x_vect
-        self.ax.set_xlim(x[mask].min(), x[mask].max())
-        self.canvas.draw()
-
-
 
     def on_draw(self):
         """ Redraws the figure
@@ -178,7 +145,7 @@ class GprMainWindow(GprMainWindowBase):
 
 
         # clear the axes and redraw the plot anew
-        ax.get_axes().set_frame_on(False)
+        ax.axes.set_frame_on(False)
         ax.clear()
         gpr_show_figure(self)(True)
 
@@ -203,16 +170,6 @@ class GprMainWindow(GprMainWindowBase):
 
         self.canvas.flush_events()
         self.canvas.draw()
-
-
-
-
-    def on_hypb_checkbox(self):
-        pass
-
-
-    def on_mask_checkbox(self, status):
-        print("clicked")
 
 
     def update_flag_checkbox(self, flag, tab_key, obj_key):
