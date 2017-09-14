@@ -1,25 +1,14 @@
-#!/usr/bin/python
-# -*- coding: utf-8 -*-
-
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
-#from __future__ import unicode_literals
-
-import sys, os, random
+import sys
+import os
+import traceback
 from time import sleep
 
-import SiQt
 from qtpy import QtCore
 from qtpy import QtWidgets
-from SiQt.siqt.dep_resolv import sync_gui, calculate_dependencies
-from SiQt.siqt.widgets import (DebugInfoWidget,)
-#import SiQt.siqt.matplotlib
+from SiQt.dep_resolv import sync_gui, calculate_dependencies
+from SiQt.widgets import (DebugInfoWidget,)
 import matplotlib
 
-matplotlib.rcParams['backend.qt4'] = 'PyQt4'
-matplotlib.rcParams['axes.formatter.limits'] = -6,6  # use scientific notation if log10
-                # of the axis range is smaller than the first or larger than the second
 
 
 from matplotlib.figure import Figure
@@ -27,14 +16,18 @@ from matplotlib.colors import LogNorm
 from matplotlib.patches import Rectangle
 import matplotlib.pyplot as plt
 
-from .definitions import GprMainWindowBase,  gpr_show_figure
+from .definitions import SymerioMainWindowBase,  gpr_show_figure
 import numpy as np
 
 
+matplotlib.rcParams['backend.qt4'] = 'PyQt4'
+matplotlib.rcParams['axes.formatter.limits'] = -6,6  # use scientific notation if log10
+                # of the axis range is smaller than the first or larger than the second
 
 
 HSLIDER_STEP = 1
 
+sys.excepthook = traceback.print_exception
 
 
 
@@ -44,10 +37,10 @@ HSLIDER_STEP = 1
 #def restore_cursor():
 #    QtGui.QApplication.restoreOverrideCursor()
 
-BASE_WINDOW_TITLE = 'GUI tool'
+BASE_WINDOW_TITLE = 'GUI template'
 
 
-class GprMainWindow(GprMainWindowBase):
+class SymerioMainWindow(SymerioMainWindowBase):
     def __init__(self, parent=None):
         QtWidgets.QMainWindow.__init__(self, parent)
         self.setWindowTitle(BASE_WINDOW_TITLE)
@@ -108,7 +101,7 @@ class GprMainWindow(GprMainWindowBase):
 
 
     @sync_gui(update=['original'], view_mode='original')
-    def on_open_datafile(self, state):
+    def on_open_datafile(self, state=None):
         file_choices = "Reflexw (*.*R);;All Files (*)"
 
         path = QtWidgets.QFileDialog.getOpenFileName(self, 
@@ -184,4 +177,3 @@ class GprMainWindow(GprMainWindowBase):
             self.widgets['debug'].close()
         self.widgets['debug'] = DebugInfoWidget(self)
         self.widgets['debug'].show()
-

@@ -1,29 +1,23 @@
-#!/usr/bin/python
-# -*- coding: utf-8 -*-
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
-#from __future__ import unicode_literals
-
-import sys, os, random
+import sys, os
 from time import sleep
 from collections import OrderedDict
+from textwrap import dedent
 
-import SiQt
-from qtpy import QtCore
-from qtpy import QtWidgets
+from qtpy import QtCore, QtWidgets
 
-import matplotlib.backends.backend_qt4agg as backend_qtagg
+import matplotlib.backends.backend_qt5agg as backend_qtagg
 
 from matplotlib.figure import Figure
 import matplotlib.pyplot as plt
 
 import numpy as np
 
-from gprcore import __version__, __version_date__, __version_hash__, _resource_path
-from SiQt.siqt.dep_resolv import sync_gui, dependency_graph, calculate_dependencies
-from SiQt.siqt.definitions import (add_actions, create_action,
+from ._version import __version__
+from SiQt.dep_resolv import sync_gui, dependency_graph, calculate_dependencies
+from SiQt.definitions import (add_actions, create_action,
                     menu_generator, set_dep_flag_recursive, SiqtElement)
+from SiQt.deployement import _resource_path
+
 
 class NavigationToolbar(backend_qtagg.NavigationToolbar2QT):
     # only display the buttons we need
@@ -41,7 +35,7 @@ def gpr_show_figure(self):
 HSLIDER_STEP = 1
 
 
-class GprMainWindowBase(QtWidgets.QMainWindow):
+class SymerioMainWindowBase(QtWidgets.QMainWindow):
 
     # some generic methods defined in gprcore
     add_actions = add_actions
@@ -50,27 +44,21 @@ class GprMainWindowBase(QtWidgets.QMainWindow):
     set_dep_flag_recursive = set_dep_flag_recursive
 
     # dependency flags, show if the corresponding data is ready for use
-    dep_flags = { key: False for key in ['original']}
+    dep_flags = {key: False for key in ['original']}
     dep_flags[False] = False
     dep_graph = {'original': []}
     menu = {}
     tabs = {}
     controls = {}
 
-
     def on_about(self):
-        msg = u""" tagui
+        msg = dedent("""GUI Template
 
+                     Version: {version}
 
-Version: {version}
-Version hash: {version_hash}
-Release date: {version_date}
-
-© 2016 tagui
-        """.format(version=__version__, version_hash=__version_hash__,
-                   version_date=__version_date__)
-        QtWidgets.QMessageBox.about(self, "About tagui", msg.strip())
-
+                     © 2017 Symerio
+                     """.format(version=__version__))
+        QtWidgets.QMessageBox.about(self, "About", msg.strip())
 
     def create_plot_area(self):
         """ 
@@ -208,7 +196,6 @@ Release date: {version_date}
         hbox.addLayout(vbox)
 
 
-
         self.main_frame.setLayout(hbox)
         self.setCentralWidget(self.main_frame)
 
@@ -229,8 +216,6 @@ Release date: {version_date}
             return
 
         return func
-
-
 
 
     def create_menu(self):
@@ -262,11 +247,8 @@ Release date: {version_date}
         self.menu_generator('about', 'About', about_menu)
 
 
-
-
     def closeEvent(self, event):
         for key in list(self.widgets):
             if self.widgets[key] is not None:
                 self.widgets[key].close()
-        super(GprMainWindowBase, self).closeEvent(event)
-
+        super(SymerioMainWindowBase, self).closeEvent(event)
