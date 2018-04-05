@@ -28,7 +28,7 @@ def show_figure(self):
     return f
 
 
-class InsightMainWindowBase(QtWidgets.QMainWindow, SiQtMixin):
+class GUIMainWindowBase(QtWidgets.QMainWindow, SiQtMixin):
 
     # dependency flags, show if the corresponding data is ready for use
     dep_flags = {key: False for key in ['original']}
@@ -191,4 +191,4 @@ class InsightMainWindowBase(QtWidgets.QMainWindow, SiQtMixin):
         for key in list(self.widgets):
             if self.widgets[key] is not None:
                 self.widgets[key].close()
-        super(InsightMainWindowBase, self).closeEvent(event)
+        super(GUIMainWindowBase, self).closeEvent(event)

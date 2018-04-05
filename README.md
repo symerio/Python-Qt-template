@@ -24,7 +24,7 @@ finally install this package,
 pip install git+https://github.com/symerio/Python-Qt-template.git
 ```
 
-## Start the GUI
+## Starting the GUI
 
 ```
 python scripts/start_gui.py

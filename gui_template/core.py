@@ -5,13 +5,13 @@ from qtpy import QtWidgets
 from SiQt.dep_resolv import sync_gui, calculate_dependencies
 from SiQt.widgets import (DebugInfoWidget,)
 
-from .definitions import InsightMainWindowBase,  show_figure
+from .definitions import GUIMainWindowBase,  show_figure
 
 # handle exceptions inside the application
 sys.excepthook = traceback.print_exception
 
 
-class InsightMainWindow(InsightMainWindowBase):
+class GUIMainWindow(GUIMainWindowBase):
     def __init__(self, parent=None):
         QtWidgets.QMainWindow.__init__(self, parent)
         self.setWindowTitle('Qt GUI template')
@@ -45,7 +45,7 @@ class InsightMainWindow(InsightMainWindowBase):
         ax.clear()
         show_figure(self)(True)
 
-        #self.ax.set_aspect('equal')
+        # self.ax.set_aspect('equal')
         self.ax.plot([0, 1, 2, 3], [1, 2, 4, 2])
 
         self.fig.tight_layout()

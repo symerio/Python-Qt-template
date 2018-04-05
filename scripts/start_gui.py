@@ -1,12 +1,11 @@
 import sys
-import os
 
 
 def main():
     from qtpy import QtWidgets
-    from gui_template.core import InsightMainWindow
+    from gui_template.core import GUIMainWindow
     app = QtWidgets.QApplication(sys.argv)
-    window = InsightMainWindow()
+    window = GUIMainWindow()
     window.show()
     app.exec_()
 

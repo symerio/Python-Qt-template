@@ -11,3 +11,4 @@ dist/
 *.exe
 notes.md
 bin/
+.pytest_cache/
