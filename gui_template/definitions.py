@@ -9,7 +9,7 @@ from matplotlib.figure import Figure
 import matplotlib.pyplot as plt
 
 from SiQt.dep_resolv import calculate_dependencies
-from SiQt.definitions import SiQtMixin, SiqtElement
+from SiQt.definitions import SiQtMixin, SiqtItem
 
 from ._version import __version__
 # this needs to be copied locally to work
@@ -25,7 +25,6 @@ class NavigationToolbar(backend_qtagg.NavigationToolbar2QT):
 def show_figure(self):
     def f(status=True):
         self.ax.set_visible(status)
-        self.cbar_ax.set_visible(status)
     return f
 
 
@@ -65,14 +64,10 @@ class InsightMainWindowBase(QtWidgets.QMainWindow, SiQtMixin):
         self.canvas.setParent(self.main_frame)
 
         self.ax = plt.subplot2grid((1, 1), (0, 0))
-        cbar_frac = 30
-        gridspec = plt.GridSpec(1, cbar_frac)
-        subplotspec = gridspec.new_subplotspec((0, 0), 1, cbar_frac-1)
+        gridspec = plt.GridSpec(1, 1)
+        subplotspec = gridspec.new_subplotspec((0, 0), 1, 1)
 
         self.ax = self.fig.add_subplot(subplotspec)
-
-        subplotspec = gridspec.new_subplotspec((0, cbar_frac-1), 1, 1)
-        self.cbar_ax = self.fig.add_subplot(subplotspec)
 
         # Bind the 'pick' event for clicking on one of the bars
         # self.canvas.mpl_connect('pick_event', self.on_pick)
@@ -101,16 +96,13 @@ class InsightMainWindowBase(QtWidgets.QMainWindow, SiQtMixin):
         # Defining components of the tab1
         # First row of parameters
 
-        ctab['analyse_btn'] = SiqtElement(QPushButton('Push button'),
-                                          tab1_layout, (0, 2*2))
-
-        # Second row of parameters
-        ctab['update_plt_btn'] = SiqtElement(QPushButton("&Update plot"),
-                                             tab1_layout, (2, 2*3))
+        ctab['plot_btn'] = SiqtItem(QPushButton('Plot'),
+                                    (0, 0), layout=tab1_layout)
+        ctab['plot_btn'].clicked.connect(self.on_draw)
 
         tab1.setLayout(tab1_layout)
         self.tab_widget.addTab(tab1, "Main")
-        ctab['base'] = {'depends': ['original'], 'qtobj': tab1}
+        ctab['base'] = {'depends': [], 'qtobj': tab1}
 
     def create_main_frame(self):
         self.main_frame = QtWidgets.QWidget()
@@ -133,7 +125,7 @@ class InsightMainWindowBase(QtWidgets.QMainWindow, SiQtMixin):
 
         logo = QtWidgets.QLabel(self.main_frame)
         filepath = _resource_path(os.path.join('gui', 'data',
-                                               'lidyl-logo.png'))
+                                               'logo.png'))
         logo_exist = os.path.exists(filepath)
 
         if logo_exist:
@@ -156,7 +148,7 @@ class InsightMainWindowBase(QtWidgets.QMainWindow, SiQtMixin):
         calculate_dependencies(self, initialize=True)
 
     def create_status_bar(self):
-        self.status_text = QtWidgets.QLabel("Convolution options")
+        self.status_text = QtWidgets.QLabel("Tooltip")
         self.statusBar().addWidget(self.status_text, 1)
 
     def on_view_handler(self, view_mode):

@@ -14,7 +14,7 @@ sys.excepthook = traceback.print_exception
 class InsightMainWindow(InsightMainWindowBase):
     def __init__(self, parent=None):
         QtWidgets.QMainWindow.__init__(self, parent)
-        self.setWindowTitle('Insight')
+        self.setWindowTitle('Qt GUI template')
 
         self.create_menu()
         self.create_main_frame()
@@ -26,7 +26,7 @@ class InsightMainWindow(InsightMainWindowBase):
 
     @sync_gui(update=['original'], view_mode='original')
     def on_open_datafile(self, state=None):
-        file_choices = "Insight data (*.h5);;All Files (*)"
+        file_choices = "All Files (*)"
 
         path = QtWidgets.QFileDialog.getOpenFileName(self,
                                                      'Load file', '',
@@ -36,13 +36,8 @@ class InsightMainWindow(InsightMainWindowBase):
             return
 
     def on_draw(self):
-        """ Redraws the figure
+        """Draw the figure
         """
-        if not hasattr(self, 'gpr') or self.gpr is None:
-            return
-
-        d = self.gis.data
-
         ax = self.ax
 
         # clear the axes and redraw the plot anew
@@ -50,8 +45,8 @@ class InsightMainWindow(InsightMainWindowBase):
         ax.clear()
         show_figure(self)(True)
 
-        self.ax.set_aspect('equal')
-        # self.cbar = plt.colorbar(im, cax=self.cbar_ax)
+        #self.ax.set_aspect('equal')
+        self.ax.plot([0, 1, 2, 3], [1, 2, 4, 2])
 
         self.fig.tight_layout()
 

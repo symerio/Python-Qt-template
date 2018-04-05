@@ -12,7 +12,4 @@ def main():
 
 
 if __name__ == "__main__":
-    # use pyside2 QT backend by default
-    if "QT_API" not in os.environ:
-        os.environ['QT_API'] = 'pyside2'
     main()
