@@ -1,5 +1,7 @@
 # A simple (Py)Qt GUI template
 
+[![Build Status](https://travis-ci.org/symerio/Python-Qt-template.svg?branch=master)](https://travis-ci.org/symerio/Python-Qt-template)
+
 A simple template to start a PyQt5/PySide2 based GUI project. It requires Python 3.5+.
 
 By default this uses PySide2 and matplotlib 2.1rc1
